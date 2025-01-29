@@ -1,0 +1,282 @@
+"Personal Trainer" by Feraidon AbdulRahimzai
+
+	Release along with an interpreter, a website, cover art ("Rec center") and the source text.
+	
+[=== ROOM DESCRIPTIONS ===]
+
+	
+
+The Fitness Center is a room. "Carleton College Recreation Center's Fitness Center: A spacious area filled with various cardio machines, weight machines, and free weights. Mirrors line the walls, reflecting the dedication of those working out. Schiller, a personal trainer, is here, ready to assist. You can always say: 'conclude experience' or 'finish session' to end."
+
+The Climbing Wall Area is east of the Fitness Center. "Climbing Wall Area: The centerpiece is a 30-foot high rock wall, molded to simulate natural rock formations. Nearby, a bouldering cave offers challenges for climbers of all levels. Alex, the climbing instructor, stands by, ensuring safety and offering guidance."
+
+The Fieldhouse is south of the Fitness Center. "Fieldhouse: An expansive space featuring multiple courts for basketball, tennis, and other sports. A 200-meter indoor track encircles the area, accommodating runners and walkers alike. A basketball hoop stands in one corner, and the track stretches invitingly around the perimeter."
+
+[=== CHARACTERS ===]
+
+Schiller is a person in the Fitness Center. "Schiller, an energetic personal trainer in athletic wear, carries a welcoming smile and a book of poetry in hand. They seem eager to share their fitness knowledge."
+
+Alex is a person in the Climbing Wall Area. "Alex, the climbing instructor, is equipped with harnesses and climbing gear. Their calm demeanor instills confidence in climbers."
+
+[=== FIELDHOUSE INTERACTIVITY ===]
+Has-scored is a truth state that varies. Has-scored is false.
+Has-sprinted is a truth state that varies. Has-sprinted is false.
+
+
+
+[Basketball Shooting Challenge]
+A basketball is a thing in the Fieldhouse. "A basketball sits idly on the court, ready for use."
+
+Shooting the basketball is an action applying to nothing.
+Understand "shoot basketball" or "throw basketball" or "take a shot" as shooting the basketball.
+
+Carry out shooting the basketball:
+	say "You dribble the basketball a few times, line up your shot, and throw it toward the hoop...";
+	let roll be a random number between 1 and 10;
+	if roll > 5:
+		now Has-scored is true;
+		say "Swish! The ball sails cleanly through the hoop. Nice shot!";
+	otherwise:
+		say "The ball bounces off the rim and rolls away. Better luck next time.";
+
+[Track Sprinting Time Trial]
+Sprinting is an action applying to nothing.
+Understand "run track" or "sprint" or "start sprinting" as sprinting.
+
+Carry out sprinting:
+	say "You take off on the 200-meter track, pushing yourself to your limits...";
+	let sprint_time be a random number between 20 and 40;
+	say "You complete the sprint in [sprint_time] seconds. Great effort!";
+	if sprint_time <= 25:
+		now Has-sprinted is true;
+		say "You're really fast! Keep it up!";
+	otherwise if sprint_time <= 30:
+		say "Not bad! With practice, you could go even faster. Retry and aim for less than or equal to 25 seconds";
+	otherwise:
+		say "That was a solid start! Keep training and see how much you improve.";
+
+[=== INTERACTIONS WITH SCHILLER ===]
+
+Schiller-greeted is a truth state that varies. Schiller-greeted is false.
+Schiller-engaged is a truth state that varies. Schiller-engaged is false.
+Schiller-insulted is a truth state that varies. Schiller-insulted is false.
+
+Greeting is an action applying to one thing.
+Understand 
+	"greet [thing]" or 
+	"say hello to [thing]" or 
+	"say hi to [thing]" or 
+	"wave to [thing]" or 
+	"hello [thing]" or
+	"hi [thing]"
+	as greeting.
+
+Check greeting:
+	if the noun is not Schiller:
+		say "There's no point in greeting that." instead.
+
+Carry out greeting Schiller:
+	if Schiller-greeted is false:
+		now Schiller-greeted is true;
+		now Schiller-engaged is true;
+		say "Schiller looks up from their book of poetry with enthusiasm. 'Hey there! Welcome to the Carleton College Rec Center! Let me help you get started.'";
+	otherwise:
+		say "Schiller is already engaged in conversation with you."
+
+Concluding is an action applying to one thing.
+Understand 
+	"say goodbye to [thing]" or 
+	"bye [thing]" or 
+	"goodbye [thing]" or 
+	"end conversation with [thing]" 
+	as concluding.
+
+Check concluding:
+	if the noun is not Schiller:
+		say "You can't end a conversation with that." instead.
+
+Carry out concluding Schiller:
+	if Schiller-engaged is true:
+		now Schiller-engaged is false;
+		say "Schiller smiles warmly and says, 'Take care! See you!' They return their attention to their book of poetry.";
+	otherwise:
+		say "Schiller is not currently engaged in a conversation with you."
+
+Insulting is an action applying to one thing.
+Understand 
+	"insult [thing]" or 
+	"attack [thing]" or 
+	"say something mean to [thing]" or 
+	"tell [thing] " as insulting.
+
+Check insulting:
+	if the noun is not Schiller:
+		say "That doesn't seem like the right target for an insult." instead.
+
+Carry out insulting Schiller:
+	now Schiller-insulted is true;
+	say "Schiller frowns, their enthusiasm fading. 'That's not very nice. I'm afraid I have to ask you to leave.' You are escorted out of the gym.";
+	end the story saying "You were kicked out of the Carleton College Rec Center."
+
+Instead of asking Schiller about something when Schiller-greeted is false:
+	say "Schiller is busy with their book of poetry. Maybe you should greet them first."
+
+Instead of asking Schiller about something when Schiller-engaged is false:
+	say "Schiller is not currently engaged in a conversation with you. Try greeting them first."
+
+Instead of asking Schiller about something when Schiller-insulted is true:
+	say "Schiller seems reluctant to talk further after your earlier comment."
+
+Table of Trainer Topics
+topic	response
+"workout plans"	"'Let's talk about structuring your fitness journey!' Schiller says excitedly. 'Think of it like building a house. We need a strong foundation with basic movements, then we add complexity as you progress. Want to hear about our beginner-friendly programs?'"
+"nutrition"	"'Nutrition is literally what fuels your success,' Schiller explains, showing some notes from their book of poetry. 'It's not about strict diets, but rather finding a sustainable balance. Have you thought about your current eating habits?'"
+"cardio"	"'Cardio is like the background music of fitness,' Schiller grins. 'Some people love running. Others prefer dancing or cycling. The key is finding what makes your heart happy while making it stronger.'"
+"strength training"	"'Ah, strength training!' Schiller's eyes light up. 'It's not just about lifting heavy things. It's about building a stronger, more resilient you. Did you know that strength training can improve bone density and mental health too?'"
+"recovery"	"'Recovery is the unsung hero of fitness,' Schiller says wisely. 'It's like hitting the save button on your workout progress. Want to learn about proper sleep, stretching, and nutrition for optimal recovery?'"
+"motivation"	"'Staying motivated is like keeping a fire burning,' Schiller shares enthusiastically. 'Some days you need big logs. Other days, just tiny twigs to keep it going. Let's find what sparks your fitness passion!'"
+"equipment"	"'The gym might look like a sci-fi movie set at first,' Schiller chuckles. 'But each piece of equipment is here to help you reach specific goals. Would you like a tour of our basic machines?'"
+"form"	"'Proper form is the foundation of everything we do,' Schiller demonstrates with perfect posture. 'It's like learning to dance. At first, you focus on each step, then it becomes natural. Ready to learn some basics?'"
+"goals"	"'Setting fitness goals is like plotting a road trip,' Schiller pulls out their book of poetry. 'We need to know where we're going to plan the best route. What destinations interest you on your fitness journey?'"
+"schedule"	"'Creating a workout schedule is like meal prep for your fitness,' Schiller explains. 'We plan ahead to make sure you get all the essential movement nutrients! Shall we look at what might work for your lifestyle?'"
+"supplements"	"'Supplements are like seasoning in cooking,' Schiller notes thoughtfully. 'They can enhance things, but the main ingredients - good nutrition and consistent training - are what really matter. Want to discuss what might benefit your goals?'"
+"progress tracking"	"'Tracking progress is like being a fitness detective,' Schiller shows some notes from their book of poetry. 'We gather clues from measurements, photos, and performance to solve the mystery of what works best for you. Ready to start collecting evidence?'"
+"hydration"	"'Hydration is fundamental for your body to function at its best,' Schiller says. 'Think of it as the oil that keeps your engine running smoothly. Are you drinking enough water throughout the day?'"
+"mental health"	"'Fitness and mental health go hand in hand,' Schiller remarks. 'Exercise can reduce stress, boost mood, and improve focus. Do you have any concerns you'd like to share?'"
+"yoga"	"'Yoga combines flexibility, strength, and mindfulness,' Schiller says with a calming tone. 'It's a great way to improve your overall well-being. Would you like to learn some basic poses?'"
+"HIIT"	"'High-Intensity Interval Training is a fantastic way to burn calories quickly,' Schiller says enthusiastically. 'It alternates short bursts of intense activity with rest. Would you like to try a sample workout?'"
+"balance training"	"'Balance training is essential as it helps prevent injuries and improves coordination,' Schiller explains. 'We have some great exercises to start with. Interested?'"
+"fitness apps"	"'Technology can really enhance your fitness journey,' Schiller says. 'There are many apps that track progress, offer workouts, and even remind you to hydrate. Want some recommendations?'"
+"family fitness"	"'Getting the whole family involved in fitness is a great idea,' Schiller says. 'It can be fun and create healthy habits for everyone. Need some tips for family-friendly activities?'"
+"outdoor workouts"	"'Exercising outdoors can be refreshing and fun,' Schiller shares. 'Nature is the best gym. Shall we discuss some activities you can try outside?'"
+"stress management"	"'Exercise is a powerful tool for managing stress,' Schiller explains. 'From yoga to cardio, many activities can help. Want to explore which might work for you?'"
+"cross-training"	"'Cross-training is a great way to improve overall fitness and avoid burnout,' Schiller explains. 'It involves mixing up your workout routine to target different muscle groups. Want to hear about some options?'"
+"mobility exercises"	"'Mobility exercises are essential for joint health and flexibility,' Schiller says. 'They help you move better and feel better. Shall we go over some key movements?'"
+"personal records"	"'Setting and breaking personal records can be incredibly motivating,' Schiller says. 'It's a way to track progress and celebrate milestones. What goals are you aiming to beat?'"
+"injury prevention"	"'Preventing injuries is all about preparation and listening to your body,' Schiller advises. 'Proper warm-ups, stretching, and technique are crucial. Want to go over some tips?'"
+"treadmill"	"'Using the treadmill is simple,' Schiller explains. 'Start by standing on the side rails and pressing the start button. Adjust the speed and incline gradually using the controls. Always keep your posture upright and avoid gripping the handrails too tightly.'"
+"elliptical"	"'The elliptical is great for a low-impact workout,' Schiller says. 'Step onto the pedals and start moving. Use the handlebars for balance, and adjust resistance as needed for your fitness level.'"
+"rowing machine"	"'The rowing machine is fantastic for a full-body workout,' Schiller demonstrates. 'Start by strapping your feet in securely. Push with your legs, lean back slightly, and then pull the handle towards your chest. Make sure to maintain a steady rhythm.'"
+"stationary bike"	"'The stationary bike is great for cardio,' Schiller explains. 'Adjust the seat height so your legs are slightly bent at the lowest point of the pedal stroke. Start pedaling and use the resistance knob to make it easier or harder as you go.'"
+"bench press"	"'The bench press is a classic for building upper body strength,' Schiller says. 'Lie down on the bench with your feet flat on the ground. Grip the bar slightly wider than shoulder-width, and lower it slowly to your chest before pushing it back up.'"
+"leg press"	"'The leg press targets your lower body,' Schiller says. 'Sit on the machine with your back flat against the seat. Place your feet shoulder-width apart on the platform, and push it away by extending your legs. Keep your knees slightly bent at the top.'"
+"pull-up bar"	"'Pull-ups are excellent for upper body strength,' Schiller says. 'Grip the bar with your palms facing away from you. Pull yourself up until your chin is above the bar, then lower yourself down slowly. If it's too challenging, we can try assisted pull-ups.'"
+
+
+
+Understand 
+	"ask [someone] [text]" or
+	"[someone] what is [text]" as asking it about.
+
+After asking someone about something:
+	repeat through the Table of Trainer Topics:
+		if the topic understood includes topic entry:
+			say "[response entry][paragraph break]";
+			rule succeeds;
+	say "'That's an interesting question! While it's not my specialty, I can connect you with someone who knows more about that, next year' Schiller grins humorously"
+
+[=== INTERACTIONS WITH ALEX ===]
+
+Alex_hello is a truth state that varies. Alex_hello is true.
+Alex_converse is a truth state that varies. Alex_converse is true.
+
+hello Alex is an action applying to one thing.
+Understand "greet [thing]" or "say hello to [thing]" or "hi [thing]" as hello Alex.
+
+Check hello Alex:
+	if the noun is not Alex:
+		say "There's no point in greeting that." instead.
+
+Carry out hello Alex:
+	if Alex_hello is false:
+		now Alex_hello is true;
+		now Alex_converse is true;
+		say "Alex nods and smiles. 'Hello! Ready to tackle the climbing wall today?'";
+	otherwise:
+		say "Alex is already talking to you."
+
+ending Alex is an action applying to one thing.
+Understand "say goodbye to Alex" or "bye Alex" or "goodbye Alex" or "end conversation with Alex" as ending Alex.
+
+Check ending Alex:
+	if the noun is not Alex:
+		say "You can't end a conversation with that." instead.
+
+Carry out ending Alex:
+	if Alex_converse is true:
+		now Alex_converse is false;
+		say "Alex gives you a thumbs up. 'Great job today! See you next time.'";
+	otherwise:
+		say "Alex is not currently talking to you."
+
+[=== CLIMBING SESSION ===]
+
+A harness is a wearable thing in the Climbing Wall Area. "A sturdy climbing harness hangs on the wall, available for use."
+
+A certificate is a thing. The certificate is nowhere. "A certificate recognizing your successful climb is ready to be awarded."
+
+Wearing the harness is an action applying to one thing.
+Understand "wear [thing]" or "put on [thing]" or "equip [thing]" as wearing the harness.
+
+Check wearing the harness:
+	if the noun is not the harness:
+		say "You can't wear that." instead.
+
+Carry out wearing the harness:
+	say "You put on the climbing harness, securing it snugly around your waist and legs.";
+	now the harness is worn by the player;
+
+Removing the harness is an action applying to one thing.
+Understand "remove harness" or "take off harness" as removing the harness.
+
+Check removing the harness:
+	if the noun is not the harness:
+		say "You can't remove that." instead;
+	if the harness is not worn by the player:
+		say "You're not wearing the harness." instead.
+
+Carry out removing the harness:
+	say "You take off the climbing harness and hang it back on the wall.";
+	now the harness is nowhere;
+
+Starting a climb is an action applying to nothing.
+Understand "start climb" or "climb wall" or "begin climbing" as starting a climb.
+
+Check starting a climb:
+	if the player is not in the Climbing Wall Area:
+		say "There's nothing to climb here." instead;
+	if Alex_converse is false:
+		say "Alex notices you eyeing the wall. 'Feel free to ask if you need any assistance,' they say." instead;
+	if the harness is not worn by the player:
+		say "Alex stops you. 'Safety first! Please put on a harness before climbing.'" instead.
+
+Carry out starting a climb:
+	say "With Alex's guidance, you approach the climbing wall. You begin your ascent, finding footholds and gripping the molded rocks. After a challenging climb, you reach the top and descend safely.";
+	move the certificate to the player;
+	say "Alex hands you a certificate. 'Congratulations on completing the climb!'";
+
+[=== ENDING THE EXPERIENCE ===]
+
+
+Carry out ending the experience:
+    say "With your climbing certificate in hand, along with the satisfaction of scoring a basket and completing the sprint, you reflect on the progress you've made today. A sense of accomplishment fills you as you prepare to leave the Carleton College Recreation Center.";
+    end the story saying "Congrats on the achievements and the competition you put out there!!!"
+
+Ending the experience is an action applying to nothing.
+Understand "conclude experience" or "finish session" as ending the experience.
+
+Check ending the experience:
+	if the player does not have the certificate:
+		say "You feel like there's more to explore before ending your session." instead;
+	if Has-scored is false:
+		say "You feel like there's more to explore before ending your session." instead;
+	if Has-sprinted is false:
+		say "You feel like there's more to explore before ending your session." instead;
+
+
+
+Carry out ending the experience:
+	say "With your climbing certificate in hand, you reflect on the progress you've made today. A sense of accomplishment fills you as you prepare to leave the Carleton College Recreation Center.";
+	end the story saying "You concluded your adventure with new achievements and a calm mind."
+
+[=== END OF THE STORY ===]
